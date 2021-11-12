@@ -21,7 +21,7 @@ public class NGram {
 
     public void map(Object key, Text value, Context context
                     ) throws IOException, InterruptedException {
-      StringTokenizer itr = new StringTokenizer(value.toString().replaceAll(""\\p{Punct}", ""));
+      StringTokenizer itr = new StringTokenizer(value.toString().replaceAll("\\p{Punct}", ""));
 
       //remove all punctuaion, only use words as key
 
