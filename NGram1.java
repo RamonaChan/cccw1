@@ -1,3 +1,7 @@
+
+//input
+//output
+
 import java.io.IOException;
 import java.util.StringTokenizer;
 
@@ -16,24 +20,18 @@ public class NGram {
   public static class NGMapper
        extends Mapper<Object, Text, Text, IntWritable>{
 
-    private final static IntWritable one = new IntWritable(2);
+    private final static IntWritable one = new IntWritable(1);
     private Text word = new Text();
 
     public void map(Object key, Text value, Context context
                     ) throws IOException, InterruptedException {
-      StringTokenizer itr = new StringTokenizer(value.toString().replaceAll("\\p{Punct}", ""));
-
+      String []itr=value.toString().split("\\W+"); 
+	
       //remove all punctuaion, only use words as key
-      /*int n = 2;
-	int j = 0;
-	int i = 0;
-	*/
 	    
-                                                                            
-      while (itr.hasMoreTokens()) {
-	word.set(itr.nextToken());
-        context.write(word, one);
-	  
+      for(int i=0;i<(itr.length) - 1; i++){
+	word.set(itr[i]+" "+itr[i+1]);
+        context.write(word, one);  
       }
     }
   }
