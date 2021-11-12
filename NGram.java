@@ -11,9 +11,9 @@ import org.apache.hadoop.mapreduce.Reducer;
 import org.apache.hadoop.mapreduce.lib.input.FileInputFormat;
 import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
 
-public class WordCount {
+public class NGram {
 
-  public static class WCMapper
+  public static class NGMapper
        extends Mapper<Object, Text, Text, IntWritable>{
 
     private final static IntWritable one = new IntWritable(1);
@@ -21,10 +21,9 @@ public class WordCount {
 
     public void map(Object key, Text value, Context context
                     ) throws IOException, InterruptedException {
-      StringTokenizer itr = new StringTokenizer(value.toString());
+      StringTokenizer itr = new StringTokenizer(value.toString().replaceAll(""\\p{Punct}", ""));
 
-      //Tokenised strings contain punctuations, e.g. comma, and fullstop
-      //Your task is to ensure that only words themselves are used as keys
+      //remove all punctuaion, only use words as key
 
       while (itr.hasMoreTokens()) {
 	word.set(itr.nextToken());
@@ -33,7 +32,7 @@ public class WordCount {
     }
   }
 
-  public static class WCReducer
+  public static class NGReducer
        extends Reducer<Text,IntWritable,Text,IntWritable> {
     private IntWritable result = new IntWritable();
 
@@ -52,9 +51,9 @@ public class WordCount {
   public static void main(String[] args) throws Exception {
     Configuration conf = new Configuration();
     Job job = Job.getInstance(conf, "word count");
-    job.setJarByClass(WordCount.class);
-    job.setMapperClass(WCMapper.class);
-    job.setReducerClass(WCReducer.class);
+    job.setJarByClass(NGram.class);
+    job.setMapperClass(NGMapper.class);
+    job.setReducerClass(NGReducer.class);
     job.setOutputKeyClass(Text.class);
     job.setOutputValueClass(IntWritable.class);
     FileInputFormat.addInputPath(job, new Path(args[0]));
