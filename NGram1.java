@@ -16,21 +16,24 @@ public class NGram {
   public static class NGMapper
        extends Mapper<Object, Text, Text, IntWritable>{
 
-    private final static IntWritable one = new IntWritable(1);
+    private final static IntWritable one = new IntWritable(2);
     private Text word = new Text();
 
     public void map(Object key, Text value, Context context
                     ) throws IOException, InterruptedException {
-      StringTokenizer itr = new StringTokenizer(value.toString().replaceAll(""\\p{Punct}", ""));
+      StringTokenizer itr = new StringTokenizer(value.toString().replaceAll("\\p{Punct}", ""));
 
       //remove all punctuaion, only use words as key
-      int n = 2;
-	    int j = 0;
-	    int i = 0;
+      /*int n = 2;
+	int j = 0;
+	int i = 0;
+	*/
+	    
                                                                             
       while (itr.hasMoreTokens()) {
 	word.set(itr.nextToken());
         context.write(word, one);
+	  
       }
     }
   }
