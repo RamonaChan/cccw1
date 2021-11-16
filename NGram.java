@@ -1,3 +1,10 @@
+//cluster = cwtest1
+//bucket = rccoursework
+//region = us-central1
+//jar file = ng.jar
+//input = gs://rccoursework/input
+//output = gs://rccoursework/output
+
 import java.io.IOException;
 import java.util.StringTokenizer;
 
@@ -21,13 +28,15 @@ public class NGram {
 
     public void map(Object key, Text value, Context context
                     ) throws IOException, InterruptedException {
-      StringTokenizer itr = new StringTokenizer(value.toString().replaceAll("\\p{Punct}", ""));
-
-      //remove all punctuaion, only use words as key
-
-      while (itr.hasMoreTokens()) {
-	word.set(itr.nextToken());
-        context.write(word, one);
+      	String []itr=value.toString().split("\\W+"); 
+     	//remove all punctuaion, only use words as key
+	//Turn string from book to array
+	    
+	//loop through array and to add itr according to n
+	//n = 1
+        for(int i=0;i<(itr.length) - 1; i++){
+		word.set(itr[i]+" "+itr[i+1]); 
+        	context.write(word, one);  
       }
     }
   }
@@ -61,4 +70,3 @@ public class NGram {
     System.exit(job.waitForCompletion(true) ? 0 : 1);
   }
 }
-
