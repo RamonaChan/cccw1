@@ -28,7 +28,7 @@ public class NGram {
 
     public void map(Object key, Text value, Context context
                     ) throws IOException, InterruptedException {
-      	String []itr=value.toString().split("\\W+"); 
+      	String []itr=value.toString().replaceAll("[^A-Za-z ]", "").trim().split("\\s+"); 
      	//remove all punctuaion, only use words as key
 	//Turn string from book to array
 	    
